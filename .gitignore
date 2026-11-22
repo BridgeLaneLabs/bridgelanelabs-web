@@ -1,0 +1,11 @@
+# secrets
+.env
+*.pem
+*.key
+# python
+__pycache__/
+*.pyc
+.venv/
+# local only
+archive/
+_to_delete/

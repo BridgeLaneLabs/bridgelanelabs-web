@@ -1,0 +1,44 @@
+{
+  // Ctrl+Shift+P > "Tasks: Run Task" > Review: ...
+  // A review session shares a temporary public link to your local site (Cloudflare quick tunnel).
+  // Edits in site/ show on refresh, so you can change things live with a client.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Review: start session",
+      "detail": "Live edits + a shareable link (copied to clipboard on Windows)",
+      "type": "shell",
+      "command": "./review.sh",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\review.ps1"]
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Review: show link",
+      "detail": "Print the current review link again",
+      "type": "shell",
+      "command": "./review.sh link",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\review.ps1", "link"]
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Review: end session",
+      "detail": "Close the link; the local site keeps running at http://localhost:8100",
+      "type": "shell",
+      "command": "./review.sh stop",
+      "windows": {
+        "command": "powershell.exe",
+        "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\review.ps1", "stop"]
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+      "problemMatcher": []
+    }
+  ]
+}

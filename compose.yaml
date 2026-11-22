@@ -1,0 +1,9 @@
+name: bridgelanelabs-web
+
+services:
+  web:
+    build: .
+    image: bridgelanelabs-web:local
+    ports:
+      - "127.0.0.1:8100:8000"   # local only; open http://localhost:8100
+    restart: unless-stopped

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bridge Lane Labs</title>
+<meta name="description" content="Bridge Lane Labs, Pittsburgh, PA.">
+<meta name="theme-color" content="#0f1418">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f1418'/%3E%3Cpath d='M6 44h52M10 44c6-22 38-22 44 0' stroke='%23f2b21b' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M20 44V33M32 44V29M44 44V33' stroke='%23f2b21b' stroke-width='3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --night: #0f1418;
+    --gold: #f2b21b;          /* Pittsburgh bridge gold */
+    --paint: rgba(255,255,255,.9);
+    --muted: #9aa5ad;
+    --asphalt: #2a2d31;
+    --lane-h: 116px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--night); color: #eef2f4;
+    font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  a { color: inherit; }
+
+  /* ---------- header: night photo as background, cropped to the bridge ---------- */
+  .hero { position: relative; display: flex; align-items: flex-end; justify-content: center;
+    min-height: clamp(360px, 58vh, 560px); padding: 0 24px 32px;
+    background:
+      linear-gradient(rgba(15,20,24,.15), rgba(15,20,24,.35) 55%, var(--night)),
+      url("assets/bridge-night.jpg") center 72% / cover no-repeat;
+    background-color: var(--night); }
+  .brand { max-width: 1100px; text-align: center; }
+  .skyline { display: block; width: min(360px, 72vw); height: auto; margin: 0 auto;
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,.6)); }
+  .brand h1 { margin: 10px 0 0; font-size: clamp(24px, 4.4vw, 40px); font-weight: 800; letter-spacing: .22em; text-transform: uppercase;
+    font-family: "Arial Narrow", "Roboto Condensed", system-ui, sans-serif; font-stretch: condensed;
+    text-shadow: 0 2px 12px rgba(0,0,0,.7); }
+  .tag { margin: 6px 0 0; color: #c9d1d6; font-size: clamp(12px, 1.8vw, 14px); letter-spacing: .14em; text-transform: uppercase;
+    text-shadow: 0 1px 8px rgba(0,0,0,.8); }
+
+  /* ---------- scene: river under a bridge ---------- */
+  .scene { position: relative; padding: 64px 0; overflow: hidden;
+    background:
+      linear-gradient(90deg, #17201b 0 14%, #1e2a22 14% 15.5%, transparent 15.5% 84.5%, #1e2a22 84.5% 86%, #17201b 86% 100%),
+      linear-gradient(90deg, #0d2433, #11344a 50%, #0d2433); }
+  .river { position: absolute; top: 0; bottom: 0; left: 15.5%; right: 15.5%; opacity: .35;
+    background: repeating-linear-gradient(170deg, transparent 0 22px, rgba(160,210,235,.25) 22px 24px, transparent 24px 60px);
+    animation: flow 9s linear infinite; }
+  @keyframes flow { to { background-position: 0 600px; } }
+
+  .deck { position: relative; z-index: 1; box-shadow: 0 30px 60px rgba(0,0,0,.55), 0 -10px 30px rgba(0,0,0,.35); }
+  .rail { height: 22px; background:
+      linear-gradient(var(--gold), var(--gold)) top / 100% 4px no-repeat,
+      linear-gradient(var(--gold), var(--gold)) bottom / 100% 4px no-repeat,
+      repeating-linear-gradient(45deg, transparent 0 9px, var(--gold) 9px 12px, transparent 12px 18px),
+      repeating-linear-gradient(-45deg, transparent 0 9px, var(--gold) 9px 12px, transparent 12px 18px),
+      #1a1d20; }
+
+  /* ---------- lanes ---------- */
+  .lane { position: relative; display: flex; align-items: center; gap: 28px;
+    min-height: var(--lane-h); padding: 14px clamp(18px, 7vw, 110px);
+    text-decoration: none; overflow: hidden; background: var(--asphalt); isolation: isolate; }
+  .lane + .lane::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; z-index: 2;
+    background: repeating-linear-gradient(90deg, #e9e9e2 0 46px, transparent 46px 92px); }
+  .lane .txt { position: relative; z-index: 3; text-shadow: 0 1px 3px rgba(0,0,0,.6); display: flex; flex-direction: column; min-width: 0; }
+  .kind { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+  .name { font-weight: 900; text-transform: uppercase; letter-spacing: .05em; line-height: 1.05;
+    font-size: clamp(26px, 4.6vw, 54px); color: var(--paint); }
+  .desc { position: relative; z-index: 3; margin-left: auto; margin-right: clamp(0px, 10vw, 130px); max-width: 300px; text-align: right;
+    color: rgba(255,255,255,.75); font-size: 15px; }
+  .go { display: inline-block; margin-top: 4px; font-size: 14px; font-weight: 700; color: #fff; opacity: .65; transition: opacity .2s, transform .2s; }
+  .lane:hover .go, .lane:focus-visible .go { opacity: 1; transform: translateX(4px); }
+  .lane:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+  .lane .fx { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .lane:hover .fx *, .lane:focus-visible .fx * { animation-duration: var(--fast, inherit); }
+
+  /* fast lane: Spadesys */
+  .fast { background: linear-gradient(90deg, #26292d, #2d3035); }
+  .fast .chev { position: absolute; right: 4%; top: 50%; transform: translateY(-50%); z-index: 1;
+    font: 900 64px/1 system-ui, sans-serif; letter-spacing: -.12em; color: rgba(255,255,255,.12); }
+  .streak { position: absolute; left: -30%; width: 22%; height: 5px; border-radius: 4px;
+    background: linear-gradient(90deg, transparent, rgba(120,200,255,.0), rgba(170,225,255,.85));
+    animation: zoom 1.7s linear infinite; }
+  .streak:nth-child(1) { top: 28%; }
+  .streak:nth-child(2) { top: 52%; animation-delay: -.6s; width: 30%; }
+  .streak:nth-child(3) { top: 72%; animation-delay: -1.1s; width: 16%; }
+  @keyframes zoom { to { left: 110%; } }
+  .fast:hover .streak { animation-duration: .8s; }
+
+  /* bus lane: Cloud-op */
+  .bus { background: linear-gradient(90deg, #5a2220, #662723); }
+  .bus .painted { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); z-index: 1;
+    font: 900 58px/1 system-ui, sans-serif; letter-spacing: .12em; color: rgba(255,255,255,.14); }
+  .coach { position: absolute; top: 50%; left: -200px; width: 168px; height: 52px; margin-top: -26px;
+    border-radius: 12px; background:
+      linear-gradient(#2b2f33, #2b2f33) 20px 14px / 30px 24px no-repeat,
+      linear-gradient(#2b2f33, #2b2f33) 70px 14px / 30px 24px no-repeat,
+      linear-gradient(90deg, #f3f5f6 0 86%, #9fd0ff 86%);
+    opacity: .55; box-shadow: 0 4px 0 rgba(0,0,0,.35); animation: drive 12s linear infinite; }
+  @keyframes drive { to { left: 110%; } }
+  .bus:hover .coach { animation-duration: 5s; }
+
+  /* bike lane: Dent Lines */
+  .bike { background: linear-gradient(90deg, #2c6539, #33703f); }
+  .bike .painted { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); width: 96px; z-index: 1; opacity: .3; }
+  .rider { position: absolute; top: 50%; left: -80px; width: 54px; margin-top: -18px; opacity: .3;
+    animation: pedal 9s linear infinite; }
+  @keyframes pedal { to { left: 110%; } }
+  .bike:hover .rider { animation-duration: 4s; }
+
+  /* bowling lane: Rant Face */
+  .bowl { --gut: 13px; background:
+      linear-gradient(#24272a, #24272a) top / 100% var(--gut) no-repeat,
+      linear-gradient(#24272a, #24272a) bottom / 100% var(--gut) no-repeat,
+      repeating-linear-gradient(180deg, #dcac6c 0 9px, #d29f5f 9px 10px, #d9a767 10px 19px, #cf9b5a 19px 20px); }
+  .bowl .kind { color: #7a1d12; }
+  .bowl .name { color: #2a170a; }
+  .bowl .desc { color: rgba(42,23,10,.8); }
+  .bowl .go { color: #2a170a; }
+  .bowl .txt { text-shadow: none; }
+  .arrows { position: absolute; left: 48%; top: 50%; transform: translateY(-50%); z-index: 1; display: grid; gap: 7px; }
+  .arrows i { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+    border-left: 12px solid #6b3d1a; opacity: .6; }
+  .arrows i:nth-child(1), .arrows i:nth-child(5) { margin-left: 0; }
+  .arrows i:nth-child(2), .arrows i:nth-child(4) { margin-left: 10px; }
+  .arrows i:nth-child(3) { margin-left: 20px; }
+  .pins { position: absolute; right: 6%; top: 50%; width: 66px; height: 76px; margin-top: -38px; z-index: 2; }
+  .pin { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #fff;
+    box-shadow: inset 0 0 0 3px #fff, inset 0 0 0 5px #c8281c, 0 2px 2px rgba(0,0,0,.3);
+    animation: knock 4.5s ease-out infinite; }
+  @keyframes knock {
+    0%, 58% { transform: none; opacity: 1; }
+    70% { transform: translate(var(--dx), var(--dy)) rotate(160deg); opacity: 1; }
+    86% { transform: translate(var(--dx), var(--dy)) rotate(200deg); opacity: 0; }
+    92% { transform: none; opacity: 0; }
+    100% { transform: none; opacity: 1; }
+  }
+  .ball { position: absolute; top: 50%; left: 2%; width: 30px; height: 30px; margin-top: -15px; z-index: 2; border-radius: 50%;
+    background:
+      radial-gradient(circle at 36% 34%, #111 0 2.6px, transparent 3px),
+      radial-gradient(circle at 58% 32%, #111 0 2.6px, transparent 3px),
+      radial-gradient(circle at 46% 54%, #111 0 3.2px, transparent 3.6px),
+      radial-gradient(circle at 35% 30%, #8b5cf6, #3b1d78 70%);
+    box-shadow: 0 3px 4px rgba(0,0,0,.35);
+    animation: roll 4.5s cubic-bezier(.35,.1,.6,1) infinite; }
+  @keyframes roll {
+    0% { left: 2%; transform: rotate(0); opacity: 1; }
+    60% { left: calc(94% - 70px); transform: rotate(900deg); opacity: 1; }
+    72% { left: calc(100% + 40px); transform: rotate(1100deg); opacity: 1; }
+    73%, 92% { left: 2%; opacity: 0; }
+    100% { left: 2%; opacity: 1; }
+  }
+
+
+  /* under construction */
+  .work { position: absolute; left: 52%; top: 50%; transform: translateY(-50%); z-index: 2; display: flex; align-items: center; gap: 14px; }
+  .barricade { position: relative; display: block; width: 92px; height: 26px; border-radius: 3px;
+    background: repeating-linear-gradient(135deg, #f26b1d 0 12px, #f6f3ea 12px 24px);
+    box-shadow: 0 3px 0 rgba(0,0,0,.4); }
+  .barricade b { position: absolute; top: -9px; left: 50%; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%;
+    background: #ffcf3a; box-shadow: 0 0 10px 3px rgba(255,200,40,.7); animation: blink 1.2s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: .15; box-shadow: none; } }
+  @media (max-width: 680px) { .fast .chev, .bus .painted { display: none; } .work { left: auto; right: 8%; gap: 8px; } .barricade { width: 60px; height: 20px; } }
+
+  /* lane closed */
+  .closed { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 10px clamp(18px, 7vw, 110px);
+    background: var(--asphalt); position: relative; color: var(--muted); font-size: 14px; }
+  .closed::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px;
+    background: repeating-linear-gradient(90deg, #e9e9e2 0 46px, transparent 46px 92px); }
+  .cones { display: flex; gap: 18px; }
+  .cone { width: 22px; height: 22px; border-radius: 50%;
+    background: radial-gradient(circle, #f26b1d 0 4px, #fff 4px 6.5px, #f26b1d 6.5px 9px, #c9520f 9px); }
+
+  .credit { opacity: .55; font-size: 12px; letter-spacing: .04em; }
+  footer { max-width: 1100px; margin: 0 auto; padding: 28px 24px 48px; color: var(--muted); font-size: 14px;
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+
+  @media (max-width: 680px) {
+    .lane { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .desc { margin: 0; text-align: left; max-width: calc(100% - 84px); font-size: 14px; }
+    .fast .chev, .bus .painted { font-size: 40px; }
+    .bike .painted { width: 64px; }
+    .arrows { left: 60%; top: 30%; }
+    .scene { padding: 40px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .river, .streak, .coach, .rider, .ball, .pin, .barricade b { animation: none !important; }
+    .streak, .coach, .rider { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero" title="Photo by Richard “Zuppy” Zupsic">
+  <div class="brand">
+    <img class="skyline" src="assets/skyline-logo.svg" alt="">
+    <h1>Bridge Lane Labs</h1>
+    <p class="tag">Pittsburgh, PA · Pick a lane.</p>
+  </div>
+</header>
+
+<main class="scene">
+  <div class="river" aria-hidden="true"></div>
+
+  <nav class="deck" aria-label="Projects">
+    <div class="rail" aria-hidden="true"></div>
+
+    <a class="lane fast" href="https://spadesys.net">
+      <div class="work" aria-hidden="true"><span class="cone"></span><span class="barricade"><b></b></span><span class="cone"></span></div>
+      <span class="chev" aria-hidden="true">&gt;&gt;&gt;</span>
+      <div class="txt"><span class="name">Spadesys</span><span class="go">Take this lane →</span></div>
+    </a>
+
+    <a class="lane bus" href="https://cloud-op.com">
+      <div class="work" aria-hidden="true"><span class="cone"></span><span class="barricade"><b></b></span><span class="cone"></span></div>
+      <span class="painted" aria-hidden="true">BUS</span>
+      <div class="txt"><span class="name">Cloud Co-op</span><span class="go">Take this lane →</span></div>
+    </a>
+
+    <a class="lane bike" href="https://dentlines.bridgelanelabs.com">
+      <div class="fx" aria-hidden="true">
+        <svg class="rider" viewBox="0 0 64 40" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="27" r="10"/><circle cx="51" cy="27" r="10"/><path d="M13 27l11-15h16l11 15M24 12l9 15 7-15M21 7h7M40 12l-2-6h6"/></svg>
+      </div>
+      <svg class="painted" viewBox="0 0 64 40" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13" cy="27" r="10"/><circle cx="51" cy="27" r="10"/><path d="M13 27l11-15h16l11 15M24 12l9 15 7-15M21 7h7M40 12l-2-6h6"/></svg>
+      <div class="txt"><span class="name">Dent Lines</span><span class="go">Take this lane →</span></div>
+    </a>
+
+    <a class="lane bowl" href="https://rantface.bridgelanelabs.com">
+      <div class="fx" aria-hidden="true">
+        <div class="work"><span class="cone"></span><span class="barricade"><b></b></span><span class="cone"></span></div>
+        <div class="pins">
+          <span class="pin" style="left:0;top:31px;--dx:30px;--dy:-4px"></span>
+          <span class="pin" style="left:17px;top:21px;--dx:34px;--dy:-26px"></span>
+          <span class="pin" style="left:17px;top:41px;--dx:36px;--dy:24px"></span>
+          <span class="pin" style="left:34px;top:11px;--dx:28px;--dy:-40px"></span>
+          <span class="pin" style="left:34px;top:31px;--dx:44px;--dy:6px"></span>
+          <span class="pin" style="left:34px;top:51px;--dx:30px;--dy:38px"></span>
+          <span class="pin" style="left:51px;top:1px;--dx:22px;--dy:-46px"></span>
+          <span class="pin" style="left:51px;top:21px;--dx:40px;--dy:-14px"></span>
+          <span class="pin" style="left:51px;top:41px;--dx:42px;--dy:18px"></span>
+          <span class="pin" style="left:51px;top:61px;--dx:24px;--dy:46px"></span>
+        </div>
+        <div class="arrows"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="txt"><span class="name">Rant Face</span><span class="go">Take this lane →</span></div>
+    </a>
+
+    <div class="closed">
+      <div class="cones" aria-hidden="true"><span class="cone"></span><span class="cone"></span><span class="cone"></span></div>
+      <span>Lane closed. More projects under construction.</span>
+    </div>
+
+    <div class="rail" aria-hidden="true"></div>
+  </nav>
+</main>
+
+<footer>
+  <span>© 2026 Bridge Lane Labs · Pittsburgh, PA</span>
+  <span class="credit">Photo: Richard “Zuppy” Zupsic</span>
+</footer>
+
+</body>
+</html>

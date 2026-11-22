@@ -1,0 +1,8 @@
+.git
+.gitignore
+archive
+_to_delete
+brand
+server
+README.md
+**/__pycache__
