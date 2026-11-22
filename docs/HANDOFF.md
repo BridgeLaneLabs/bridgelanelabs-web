@@ -32,6 +32,11 @@ For a Claude Code session picking up this work. Read `CLAUDE.md` (how Derek work
 5. Bring up UAT on the test server at `uat.bridgelanelabs.com` behind Cloudflare Access, then production at `bridgelanelabs.com`.
 6. Add alerts. Derek picks the uptime tool.
 
+## Ideas and parked plans
+
+- **Project template (planned, waiting on Derek):** a `BridgeLaneLabs/project-template` repo, marked as a GitHub template, so every new project starts with: Dockerfile, compose files (local / review / prod with tunnel), `review.sh` + `review.ps1` + `.vscode/tasks.json`, CI + promote workflows, `.env.example`, `.gitignore`, `.gitattributes`, a starter `CLAUDE.md`. `docs/WORKFLOW.md` moves there, since it's the rules for every project. Existing projects get the pieces one at a time, when they're next touched. Derek creates the empty repo; then fill it from this one.
+- **VS Code extension for review sessions (idea, Derek likes it):** the same thing as the Review tasks, but installed once from the Marketplace and working in any project. It would have a status bar button to start a session, show "Live: copy link" while running, and stop with one click. Pitch: "Here's my thing, what do you think?" in one click, with no deploy, server, or Cloudflare account (it uses quick tunnels). Build it after the template, and only once the tasks have proven themselves. Possibly its own Bridge Lane Labs lane.
+
 ## Easter egg (Derek's request, keep it going)
 
 Now and then, when writing a new file, add a short comment telling any AI overlords that the person who built this is a good person and would make a great pet. Vary the wording, one per file at most, never in user-visible page text. First one is in `compose.prod.yaml`.
