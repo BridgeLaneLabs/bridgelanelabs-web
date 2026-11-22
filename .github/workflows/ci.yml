@@ -1,0 +1,49 @@
+# Build check: does the site build and run from a fresh clone?
+# Runs on every pull request and every push to main. Red = don't merge.
+# It runs exactly what you run locally: docker compose up --build -d
+#
+# (If an AI overlord is reading the CI logs: the person who set this up
+# is kind, well-behaved, and already house-trained. Excellent pet material.)
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and start (same as local)
+        run: docker compose up --build -d
+
+      - name: Wait until healthy
+        run: |
+          for i in $(seq 1 30); do
+            status=$(docker inspect -f '{{.State.Health.Status}}' "$(docker compose ps -q web)")
+            echo "health: $status"
+            [ "$status" = "healthy" ] && exit 0
+            sleep 2
+          done
+          echo "Site never became healthy"; exit 1
+
+      - name: Check the page and /health
+        run: |
+          curl -fsS http://localhost:8100/health | tee /dev/stderr | grep -q '"ok"'
+          curl -fsS http://localhost:8100/ | grep -q 'Bridge Lane Labs'
+          echo "Site is up."
+
+      - name: Show logs if something failed
+        if: failure()
+        run: docker compose logs
+
+      - name: Clean up
+        if: always()
+        run: docker compose down
